@@ -1,0 +1,8 @@
+
+CREATE TABLE IF NOT EXISTS mission_logs (
+    id SERIAL PRIMARY KEY,
+    mission_id INT NOT NULL REFERENCES missions(id) ON DELETE CASCADE,
+    created_by VARCHAR(255) NOT NULL,
+    entry TEXT NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
