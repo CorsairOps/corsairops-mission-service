@@ -1,0 +1,21 @@
+services:
+  mission-service-db:
+    image: postgres:15
+    container_name: mission-service-db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5433:5432"
+    volumes:
+      - mission-service-data:/var/lib/postgresql/data
+    networks:
+      - mission-service-network
+
+volumes:
+  mission-service-data:
+
+networks:
+  mission-service-network:
+    driver: bridge
