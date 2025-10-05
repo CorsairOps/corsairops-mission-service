@@ -1,6 +1,6 @@
 package com.corsairops.mission.util;
 
-import com.corsairops.mission.client.UserServiceClient;
+import com.corsairops.mission.client.user.UserServiceClient;
 import com.corsairops.mission.dto.MissionResponse;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.shared.dto.User;

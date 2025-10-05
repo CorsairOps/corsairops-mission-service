@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS assigned_missions (
-    user_id VARCHAR(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS assigned_assets (
+    asset_id VARCHAR(255) NOT NULL,
     mission_id INT NOT NULL REFERENCES missions(id) ON DELETE CASCADE,
     assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, mission_id)
+    PRIMARY KEY (asset_id, mission_id)
 );

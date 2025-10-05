@@ -1,4 +1,4 @@
-package com.corsairops.mission.client;
+package com.corsairops.mission.client.user;
 
 import com.corsairops.shared.dto.User;
 import org.springframework.web.bind.annotation.PathVariable;

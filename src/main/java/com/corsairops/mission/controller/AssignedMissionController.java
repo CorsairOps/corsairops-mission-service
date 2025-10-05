@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/missions/assignments")
+@RequestMapping("/api/missions/assigned-missions")
 @RequiredArgsConstructor
 public class AssignedMissionController {
     private final AssignedMissionService assignedMissionService;
@@ -37,13 +37,13 @@ public class AssignedMissionController {
         assignedMissionService.unassignMissionFromUser(missionId, userId);
     }
 
-    @GetMapping("/mission/{missionId}")
+    @GetMapping("/users/{missionId}")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getUsersAssignedToMission(@PathVariable Long missionId) {
         return assignedMissionService.getUsersAssignedToMission(missionId);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/missions/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public List<MissionResponse> getMissionsAssignedToUser(@PathVariable String userId) {
         return assignedMissionService.getAllAssignedMissions(userId).stream()

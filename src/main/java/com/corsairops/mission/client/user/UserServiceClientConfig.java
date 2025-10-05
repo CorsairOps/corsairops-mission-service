@@ -1,6 +1,5 @@
-package com.corsairops.mission.config;
+package com.corsairops.mission.client.user;
 
-import com.corsairops.mission.client.UserServiceClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +8,7 @@ import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
-public class RestClientConfig {
+public class UserServiceClientConfig {
 
     @Value("${USER_SERVICE_URL}")
     private String userServiceUrl;

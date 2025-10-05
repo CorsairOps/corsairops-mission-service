@@ -1,6 +1,6 @@
 package com.corsairops.mission.service;
 
-import com.corsairops.mission.client.UserServiceClient;
+import com.corsairops.mission.client.user.UserServiceClient;
 import com.corsairops.mission.model.AssignedMission;
 import com.corsairops.mission.model.AssignedMissionId;
 import com.corsairops.mission.model.Mission;
