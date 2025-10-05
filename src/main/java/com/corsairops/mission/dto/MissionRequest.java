@@ -1,5 +1,6 @@
 package com.corsairops.mission.dto;
 
+import com.corsairops.mission.model.MissionStatus;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +22,10 @@ public record MissionRequest(
         @NotNull(message = "Start date is mandatory")
         LocalDate startDate,
 
-        LocalDate endDate
+        LocalDate endDate,
+
+        @NotNull(message = "Status is mandatory")
+        MissionStatus status
 
 
 ) {
