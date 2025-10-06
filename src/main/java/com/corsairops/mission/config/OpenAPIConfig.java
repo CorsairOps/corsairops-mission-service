@@ -33,7 +33,8 @@ public class OpenAPIConfig {
     private Info info() {
         return new Info()
                 .title("Mission Service API")
-                .description("API documentation for the Mission Service");
+                .description("API documentation for the Mission Service")
+                .version("1.0.0");
     }
 
     private SecurityRequirement securityRequirement() {

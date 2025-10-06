@@ -5,6 +5,10 @@ import com.corsairops.mission.dto.MissionResponse;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.mission.service.MissionService;
 import com.corsairops.mission.util.MissionMapper;
+import com.corsairops.shared.annotations.CommonReadResponses;
+import com.corsairops.shared.annotations.CommonWriteResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Mission Management", description = "APIs for managing missions")
 @RestController
 @RequestMapping("/api/missions")
 @RequiredArgsConstructor
@@ -19,6 +24,8 @@ public class MissionController {
     private final MissionService missionService;
     private final MissionMapper missionMapper;
 
+    @Operation(summary = "Get all missions")
+    @CommonReadResponses
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<MissionResponse> getAllMissions() {
@@ -26,6 +33,8 @@ public class MissionController {
         return missionMapper.mapToMissionResponse(missions);
     }
 
+    @Operation(summary = "Get a mission by ID")
+    @CommonReadResponses
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public MissionResponse getMissionById(@PathVariable Long id) {
@@ -33,6 +42,8 @@ public class MissionController {
         return missionMapper.mapToMissionResponse(mission);
     }
 
+    @Operation(summary = "Create a new mission")
+    @CommonWriteResponses
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MissionResponse createMission(@RequestBody @Valid MissionRequest missionRequest,
@@ -41,6 +52,8 @@ public class MissionController {
         return missionMapper.mapToMissionResponse(mission);
     }
 
+    @Operation(summary = "Update an existing mission")
+    @CommonWriteResponses
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public MissionResponse updateMission(@RequestBody @Valid MissionRequest missionRequest,
@@ -49,6 +62,8 @@ public class MissionController {
         return missionMapper.mapToMissionResponse(mission);
     }
 
+    @Operation(summary = "Delete a mission by ID")
+    @CommonWriteResponses
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMission(@PathVariable Long id) {
