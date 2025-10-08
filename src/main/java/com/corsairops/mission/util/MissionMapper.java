@@ -33,7 +33,15 @@ public class MissionMapper {
     }
 
     public List<MissionResponse> mapToMissionResponse(List<Mission> missions) {
+        if (missions.isEmpty()) {
+            return List.of();
+        }
         String ids = extractUserIdsFromMissions(missions);
+        if (ids.isEmpty()) {
+            return missions.stream()
+                    .map(this::mapToMissionResponse)
+                    .toList();
+        }
 
         List<User> users = userServiceClient.getUsersByIds(ids);
 
