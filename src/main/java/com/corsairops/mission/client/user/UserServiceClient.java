@@ -13,5 +13,5 @@ public interface UserServiceClient {
     User getUserById(@PathVariable String id);
 
     @GetExchange("/api/users/ids")
-    List<User> getUsersByIds(@RequestParam String ids);
+    List<User> getUsersByIds(@RequestParam String ids, @RequestParam(defaultValue = "false") boolean allowEmpty);
 }

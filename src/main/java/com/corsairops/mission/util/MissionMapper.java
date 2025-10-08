@@ -43,7 +43,7 @@ public class MissionMapper {
                     .toList();
         }
 
-        List<User> users = userServiceClient.getUsersByIds(ids);
+        List<User> users = userServiceClient.getUsersByIds(ids, false);
 
         var userMap = users.stream()
                 .collect(Collectors.toMap(User::id, user -> user));

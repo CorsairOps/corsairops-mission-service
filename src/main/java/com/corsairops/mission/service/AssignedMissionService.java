@@ -37,7 +37,7 @@ public class AssignedMissionService {
                 .collect(java.util.stream.Collectors.toSet());
 
         String idsString = String.join(",", userIds);
-        return userServiceClient.getUsersByIds(idsString);
+        return userServiceClient.getUsersByIds(idsString, false);
     }
 
     @Transactional

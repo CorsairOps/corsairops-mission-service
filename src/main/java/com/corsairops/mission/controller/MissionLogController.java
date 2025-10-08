@@ -4,6 +4,7 @@ import com.corsairops.mission.dto.MissionLogRequest;
 import com.corsairops.mission.dto.MissionLogResponse;
 import com.corsairops.mission.model.MissionLog;
 import com.corsairops.mission.service.MissionLogService;
+import com.corsairops.mission.util.MissionLogMapper;
 import com.corsairops.shared.annotations.CommonReadResponses;
 import com.corsairops.shared.annotations.CommonWriteResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MissionLogController {
     private final MissionLogService missionLogService;
+    private final MissionLogMapper missionLogMapper;
 
     @Operation(summary = "Create a new mission log for a specific mission")
     @CommonWriteResponses
@@ -31,7 +33,7 @@ public class MissionLogController {
              @PathVariable Long missionId,
              @RequestHeader("X-User-Id") String createdBy) {
         MissionLog log = missionLogService.createMissionLog(missionLogRequest, missionId, createdBy);
-        return MissionLogResponse.from(log);
+        return missionLogMapper.mapToResponse(log);
     }
 
     @Operation(summary = "Get all mission logs for a specific mission, sorted by timestamp descending")
@@ -40,9 +42,7 @@ public class MissionLogController {
     @ResponseStatus(HttpStatus.OK)
     public List<MissionLogResponse> getMissionLogsForMission(@PathVariable Long missionId) {
         List<MissionLog> logs = missionLogService.getMissionLogsForMissionSorted(missionId);
-        return logs.stream()
-                .map(MissionLogResponse::from)
-                .toList();
+        return missionLogMapper.mapToResponseList(logs);
     }
 
     @Operation(summary = "Delete a specific mission log by its ID")
