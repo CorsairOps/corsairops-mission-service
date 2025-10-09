@@ -4,6 +4,7 @@ import com.corsairops.mission.client.asset.AssetResponse;
 import com.corsairops.mission.dto.MissionResponse;
 import com.corsairops.mission.service.AssignedAssetService;
 import com.corsairops.mission.util.MissionMapper;
+import com.corsairops.shared.annotations.CommonReadResponses;
 import com.corsairops.shared.annotations.CommonWriteResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,16 +39,18 @@ public class AssignedAssetController {
     }
 
     @Operation(summary = "Get all assets assigned to a specific mission")
-    @CommonWriteResponses
+    @CommonReadResponses
     @GetMapping("/assets/{missionId}")
     @ResponseStatus(HttpStatus.OK)
     public List<AssetResponse> getAssignedAssetsByMissionId(@PathVariable Long missionId) {
         return assignedAssetService.getAssignedAssetsByMissionId(missionId);
     }
 
+    @Operation(summary = "Get all missions assigned to a specific asset")
+    @CommonReadResponses
     @GetMapping("/missions/{assetId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<MissionResponse> getMissionsByAssetId(@PathVariable String assetId) {
+    public List<MissionResponse> getAssignedMissionsByAssetId(@PathVariable String assetId) {
         return assignedAssetService.getMissionsByAssetId(assetId).stream()
                 .map(missionMapper::mapToMissionResponse)
                 .toList();
