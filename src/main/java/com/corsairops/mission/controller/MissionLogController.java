@@ -49,7 +49,7 @@ public class MissionLogController {
     @CommonWriteResponses
     @DeleteMapping("/{logId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMissionLog(@PathVariable Long logId, @PathVariable String missionId) {
+    public void deleteMissionLog(@PathVariable Long logId, @PathVariable Long missionId) {
         missionLogService.deleteMissionLogById(logId);
     }
 
