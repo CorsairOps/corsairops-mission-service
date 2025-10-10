@@ -44,6 +44,10 @@ public class AssignedAssetService {
         // Find all assigned assets for the given mission ID
         List<AssignedAsset> assignedAssets = assignedAssetRepository.findByMissionId(missionId);
 
+        if (assignedAssets.isEmpty()) {
+            return List.of();
+        }
+
         // Extract asset IDs from the assigned assets
         String assetIds = String.join(",", assignedAssets.stream()
                 .map(AssignedAsset::getAssetId)
