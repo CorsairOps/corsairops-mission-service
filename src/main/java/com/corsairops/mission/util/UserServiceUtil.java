@@ -39,6 +39,6 @@ public class UserServiceUtil {
     }
 
     public User getDefaultUser(String userId) {
-        return new User(userId, null, null, null, null, true, null);
+        return new User(userId, null, null, null, null, true, null, List.of());
     }
 }
