@@ -32,6 +32,10 @@ public class AssignedMissionService {
         Mission mission = missionService.getMissionById(missionId);
         List<AssignedMission> assignedMissions = assignedMissionRepository.findAllByMission(mission);
 
+        if (assignedMissions.isEmpty()) {
+            return List.of();
+        }
+
         Set<String> userIds = assignedMissions.stream()
                 .map(AssignedMission::getUserId)
                 .collect(java.util.stream.Collectors.toSet());
