@@ -4,6 +4,7 @@ import com.corsairops.mission.dto.MissionLogRequest;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.mission.model.MissionLog;
 import com.corsairops.mission.repository.MissionLogRepository;
+import com.corsairops.shared.util.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import java.util.List;
 public class MissionLogService {
     private final MissionLogRepository missionLogRepository;
     private final MissionService missionService;
+    private final EncryptionUtil encryptionUtil;
 
     @Transactional
     public MissionLog createMissionLog(MissionLogRequest missionLogRequest, Long missionId, String createdBy) {
@@ -24,7 +26,14 @@ public class MissionLogService {
                 .entry(missionLogRequest.entry())
                 .createdBy(createdBy)
                 .build();
+
+        encryptEntry(missionLog);
         return missionLogRepository.save(missionLog);
+    }
+
+    private void encryptEntry(MissionLog missionLog) {
+        String encryptedEntry = encryptionUtil.encryptString(missionLog.getEntry());
+        missionLog.setEntry(encryptedEntry);
     }
 
     @Transactional(readOnly = true)

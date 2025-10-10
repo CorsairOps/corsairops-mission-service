@@ -6,7 +6,9 @@ import com.corsairops.mission.exception.MissionNameConflictException;
 import com.corsairops.mission.exception.MissionNotFoundException;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.mission.repository.MissionRepository;
+import com.corsairops.shared.util.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +17,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MissionService {
 
     private final MissionRepository missionRepository;
+    private final EncryptionUtil encryptionUtil;
 
     @Transactional(readOnly = true)
     public List<Mission> getAllMissions() {
@@ -44,6 +48,8 @@ public class MissionService {
                 .createdBy(userId)
                 .build();
 
+        encryptDescription(mission);
+
         return missionRepository.save(mission);
     }
 
@@ -59,6 +65,7 @@ public class MissionService {
         existingMission.setEndDate(missionRequest.endDate());
         existingMission.setStatus(missionRequest.status());
 
+        encryptDescription(existingMission);
         return missionRepository.save(existingMission);
     }
 
@@ -89,5 +96,11 @@ public class MissionService {
             throw new InvalidMissionDateException("End date cannot be before start date", HttpStatus.BAD_REQUEST);
         }
     }
+
+    private void encryptDescription(Mission mission) {
+        String encryptedDescription = encryptionUtil.encryptString(mission.getDescription());
+        mission.setDescription(encryptedDescription);
+    }
+
 
 }

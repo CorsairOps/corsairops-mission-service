@@ -3,7 +3,10 @@ package com.corsairops.mission.util;
 import com.corsairops.mission.dto.MissionLogResponse;
 import com.corsairops.mission.model.MissionLog;
 import com.corsairops.shared.dto.User;
+import com.corsairops.shared.exception.EncryptionException;
+import com.corsairops.shared.util.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,11 +15,14 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class MissionLogMapper {
     private final UserServiceUtil userServiceUtil;
+    private final EncryptionUtil encryptionUtil;
 
     public MissionLogResponse mapToResponse(MissionLog missionLog) {
         User createdBy = userServiceUtil.fetchUserById(missionLog.getCreatedBy());
+        decryptEntry(missionLog);
         return new MissionLogResponse(
                 missionLog.getId(),
                 missionLog.getMission().getId(),
@@ -24,7 +30,6 @@ public class MissionLogMapper {
                 missionLog.getEntry(),
                 missionLog.getTimestamp()
         );
-
     }
 
     public List<MissionLogResponse> mapToResponseList(List<MissionLog> missionLogs) {
@@ -32,6 +37,8 @@ public class MissionLogMapper {
             if (missionLogs.isEmpty()) {
                 return List.of();
             }
+
+            missionLogs.forEach(this::decryptEntry);
 
             Set<String> ids = missionLogs.stream()
                     .map(MissionLog::getCreatedBy)
@@ -57,6 +64,15 @@ public class MissionLogMapper {
                     .toList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void decryptEntry(MissionLog missionLog) {
+        try {
+            String decryptedEntry = encryptionUtil.decryptString(missionLog.getEntry());
+            missionLog.setEntry(decryptedEntry);
+        } catch (EncryptionException e) {
+            log.warn("Failed to decrypt mission log entry with ID " + missionLog.getId() + ". Reason: " + e.getCause().getMessage());
         }
     }
 }
