@@ -5,6 +5,7 @@ import com.corsairops.mission.model.AssignedMission;
 import com.corsairops.mission.model.AssignedMissionId;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.mission.repository.AssignedMissionRepository;
+import com.corsairops.mission.util.UserServiceUtil;
 import com.corsairops.shared.dto.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class AssignedMissionService {
     private final AssignedMissionRepository assignedMissionRepository;
     private final MissionService missionService;
     private final UserServiceClient userServiceClient;
+    private final UserServiceUtil userServiceUtil;
 
     @Transactional(readOnly = true)
     public List<Mission> getAllAssignedMissions(String userId) {
@@ -39,9 +41,7 @@ public class AssignedMissionService {
         Set<String> userIds = assignedMissions.stream()
                 .map(AssignedMission::getUserId)
                 .collect(java.util.stream.Collectors.toSet());
-
-        String idsString = String.join(",", userIds);
-        return userServiceClient.getUsersByIds(idsString, false);
+        return userServiceUtil.fetchUsersByIds(userIds);
     }
 
     @Transactional

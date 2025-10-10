@@ -1,6 +1,5 @@
 package com.corsairops.mission.util;
 
-import com.corsairops.mission.client.user.UserServiceClient;
 import com.corsairops.mission.dto.MissionLogResponse;
 import com.corsairops.mission.model.MissionLog;
 import com.corsairops.shared.dto.User;
@@ -9,31 +8,23 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 public class MissionLogMapper {
-    private final UserServiceClient userServiceClient;
+    private final UserServiceUtil userServiceUtil;
 
     public MissionLogResponse mapToResponse(MissionLog missionLog) {
-        try {
-            User createdBy = userServiceClient.getUserById(missionLog.getCreatedBy());
-            return new MissionLogResponse(
-                    missionLog.getId(),
-                    missionLog.getMission().getId(),
-                    createdBy,
-                    missionLog.getEntry(),
-                    missionLog.getTimestamp()
-            );
-        } catch (Exception e) {
-            return new MissionLogResponse(
-                    missionLog.getId(),
-                    missionLog.getMission().getId(),
-                    null,
-                    missionLog.getEntry(),
-                    missionLog.getTimestamp()
-            );
-        }
+        User createdBy = userServiceUtil.fetchUserById(missionLog.getCreatedBy());
+        return new MissionLogResponse(
+                missionLog.getId(),
+                missionLog.getMission().getId(),
+                createdBy,
+                missionLog.getEntry(),
+                missionLog.getTimestamp()
+        );
+
     }
 
     public List<MissionLogResponse> mapToResponseList(List<MissionLog> missionLogs) {
@@ -42,21 +33,24 @@ public class MissionLogMapper {
                 return List.of();
             }
 
-            String ids = missionLogs.stream()
+            Set<String> ids = missionLogs.stream()
                     .map(MissionLog::getCreatedBy)
-                    .distinct()
-                    .reduce((a, b) -> a + "," + b)
-                    .orElse("");
+                    .collect(java.util.stream.Collectors.toSet());
 
-            List<User> users = userServiceClient.getUsersByIds(ids, true);
-            Map<String, User> userMap = users.stream()
-                    .collect(java.util.stream.Collectors.toMap(User::id, user -> user));
+            List<User> users = userServiceUtil.fetchUsersByIds(ids);
+            Map<String, User> userMap;
+            if (users.isEmpty()) {
+                userMap = Map.of();
+            } else {
+                userMap = users.stream()
+                        .collect(java.util.stream.Collectors.toMap(User::id, user -> user));
+            }
 
             return missionLogs.stream()
                     .map(log -> new MissionLogResponse(
                             log.getId(),
                             log.getMission().getId(),
-                            userMap.getOrDefault(log.getCreatedBy(), null),
+                            userMap.getOrDefault(log.getCreatedBy(), userServiceUtil.getDefaultUser(log.getCreatedBy())),
                             log.getEntry(),
                             log.getTimestamp()
                     ))

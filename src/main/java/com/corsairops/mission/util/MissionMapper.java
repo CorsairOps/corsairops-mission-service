@@ -1,23 +1,23 @@
 package com.corsairops.mission.util;
 
-import com.corsairops.mission.client.user.UserServiceClient;
 import com.corsairops.mission.dto.MissionResponse;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.shared.dto.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class MissionMapper {
-    private final UserServiceClient userServiceClient;
+    private final UserServiceUtil userServiceUtil;
 
     public MissionResponse mapToMissionResponse(Mission mission) {
-        User user = userServiceClient.getUserById(mission.getCreatedBy());
-
         return MissionResponse.builder()
                 .id(mission.getId())
                 .name(mission.getName())
@@ -26,27 +26,27 @@ public class MissionMapper {
                 .status(mission.getStatus().name())
                 .startDate(mission.getStartDate())
                 .endDate(mission.getEndDate())
-                .createdBy(user)
+                .createdBy(userServiceUtil.fetchUserById(mission.getCreatedBy()))
                 .createdAt(mission.getCreatedAt().toString())
                 .updatedAt(mission.getUpdatedAt().toString())
                 .build();
     }
 
+
+
     public List<MissionResponse> mapToMissionResponse(List<Mission> missions) {
         if (missions.isEmpty()) {
             return List.of();
         }
-        String ids = extractUserIdsFromMissions(missions);
-        if (ids.isEmpty()) {
-            return missions.stream()
-                    .map(this::mapToMissionResponse)
-                    .toList();
+        Set<String> ids = extractUserIdsFromMissions(missions);
+        Map<String, User> userMap;
+        if (!ids.isEmpty()) {
+            List<User> users = userServiceUtil.fetchUsersByIds(ids);
+            userMap = users.stream()
+                    .collect(Collectors.toMap(User::id, user -> user));
+        } else {
+            userMap = new HashMap<>();
         }
-
-        List<User> users = userServiceClient.getUsersByIds(ids, false);
-
-        var userMap = users.stream()
-                .collect(Collectors.toMap(User::id, user -> user));
 
         return missions.stream()
                 .map(mission -> MissionResponse.builder()
@@ -57,17 +57,20 @@ public class MissionMapper {
                         .status(mission.getStatus().name())
                         .startDate(mission.getStartDate())
                         .endDate(mission.getEndDate())
-                        .createdBy(userMap.get(mission.getCreatedBy()))
+                        .createdBy(userMap.getOrDefault(mission.getCreatedBy(), userServiceUtil.getDefaultUser(mission.getCreatedBy())))
                         .createdAt(mission.getCreatedAt().toString())
                         .updatedAt(mission.getUpdatedAt().toString())
                         .build())
                 .toList();
     }
 
-    private String extractUserIdsFromMissions(List<Mission> missions) {
+
+
+    private Set<String> extractUserIdsFromMissions(List<Mission> missions) {
         return missions.stream()
                 .map(Mission::getCreatedBy)
-                .distinct()
-                .collect(Collectors.joining(","));
+                .collect(Collectors.toSet());
     }
+
+
 }
