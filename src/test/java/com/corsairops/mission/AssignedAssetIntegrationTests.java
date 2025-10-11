@@ -18,7 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
@@ -26,7 +25,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.servlet.View;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,11 +60,6 @@ public class AssignedAssetIntegrationTests {
 
     @LocalServerPort
     int port;
-    @Qualifier("jacksonObjectMapper")
-    @Autowired
-    private Object object;
-    @Autowired
-    private View error;
 
     @BeforeEach
     void setUp() {
