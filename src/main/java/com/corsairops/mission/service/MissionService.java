@@ -34,6 +34,11 @@ public class MissionService {
                 .orElseThrow(() -> new MissionNotFoundException("Mission not found", HttpStatus.NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
+    public Long getMissionCount() {
+        return missionRepository.count();
+    }
+
     @Transactional
     public Mission createMission(MissionRequest missionRequest, String userId) {
         validateMissionRequest(missionRequest);

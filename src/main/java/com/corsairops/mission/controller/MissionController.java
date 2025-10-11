@@ -42,6 +42,14 @@ public class MissionController {
         return missionMapper.mapToMissionResponse(mission);
     }
 
+    @Operation(summary = "Get count of all missions")
+    @CommonReadResponses
+    @GetMapping("/count")
+    @ResponseStatus(HttpStatus.OK)
+    public Long getMissionCount() {
+        return missionService.getMissionCount();
+    }
+
     @Operation(summary = "Create a new mission")
     @CommonWriteResponses
     @PostMapping
