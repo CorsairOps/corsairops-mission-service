@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.corsairops</groupId>
-    <artifactId>corsairops-mission-service</artifactId>
+    <artifactId>mission-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>corsairops-mission-service</name>
     <description>corsairops-mission-service</description>
