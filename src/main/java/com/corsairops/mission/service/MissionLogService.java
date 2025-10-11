@@ -4,8 +4,10 @@ import com.corsairops.mission.dto.MissionLogRequest;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.mission.model.MissionLog;
 import com.corsairops.mission.repository.MissionLogRepository;
+import com.corsairops.shared.exception.HttpResponseException;
 import com.corsairops.shared.util.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,11 +40,15 @@ public class MissionLogService {
 
     @Transactional(readOnly = true)
     public List<MissionLog> getMissionLogsForMissionSorted(Long missionId) {
-        return missionLogRepository.findAllByMissionIdOrderByTimestampDesc(missionId);
+        Mission mission = missionService.getMissionById(missionId);
+        return missionLogRepository.findAllByMissionIdOrderByTimestampDesc(mission.getId());
     }
 
     @Transactional
     public void deleteMissionLogById(Long id) {
+        if (!missionLogRepository.existsById(id)) {
+            throw new HttpResponseException("Mission log with ID " + id + " does not exist.", HttpStatus.NOT_FOUND);
+        }
         missionLogRepository.deleteById(id);
     }
 }
