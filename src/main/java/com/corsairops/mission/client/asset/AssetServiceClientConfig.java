@@ -9,7 +9,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 public class AssetServiceClientConfig {
-    @Value("${ASSET_SERVICE_URL}")
+    @Value("${asset-service.url}")
     private String assetServiceUrl;
 
     @Bean

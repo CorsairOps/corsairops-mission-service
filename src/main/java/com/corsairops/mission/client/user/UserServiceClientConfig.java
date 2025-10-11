@@ -10,7 +10,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @Configuration
 public class UserServiceClientConfig {
 
-    @Value("${USER_SERVICE_URL}")
+    @Value("${user-service.url}")
     private String userServiceUrl;
 
     @Bean
