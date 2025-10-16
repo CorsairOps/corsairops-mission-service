@@ -1,11 +1,11 @@
 package com.corsairops.mission.service;
 
-import com.corsairops.mission.client.user.UserServiceClient;
 import com.corsairops.mission.model.AssignedMission;
 import com.corsairops.mission.model.AssignedMissionId;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.mission.repository.AssignedMissionRepository;
 import com.corsairops.mission.util.UserServiceUtil;
+import com.corsairops.shared.client.UserServiceClient;
 import com.corsairops.shared.dto.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

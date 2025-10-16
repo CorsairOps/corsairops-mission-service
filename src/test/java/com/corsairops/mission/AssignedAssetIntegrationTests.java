@@ -1,16 +1,16 @@
 package com.corsairops.mission;
 
-import com.corsairops.mission.client.asset.AssetResponse;
-import com.corsairops.mission.client.asset.AssetServiceClient;
-import com.corsairops.mission.client.asset.AssetStatus;
-import com.corsairops.mission.client.asset.AssetType;
 import com.corsairops.mission.dto.MissionRequest;
 import com.corsairops.mission.dto.MissionResponse;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.mission.model.MissionStatus;
 import com.corsairops.mission.repository.AssignedAssetRepository;
 import com.corsairops.mission.repository.MissionRepository;
+import com.corsairops.shared.client.AssetServiceClient;
 import com.corsairops.shared.dto.User;
+import com.corsairops.shared.dto.asset.AssetResponse;
+import com.corsairops.shared.dto.asset.AssetStatus;
+import com.corsairops.shared.dto.asset.AssetType;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterEach;

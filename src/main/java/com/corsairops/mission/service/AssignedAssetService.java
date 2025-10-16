@@ -1,11 +1,11 @@
 package com.corsairops.mission.service;
 
-import com.corsairops.mission.client.asset.AssetResponse;
-import com.corsairops.mission.client.asset.AssetServiceClient;
 import com.corsairops.mission.model.AssignedAsset;
 import com.corsairops.mission.model.AssignedAssetId;
 import com.corsairops.mission.model.Mission;
 import com.corsairops.mission.repository.AssignedAssetRepository;
+import com.corsairops.shared.client.AssetServiceClient;
+import com.corsairops.shared.dto.asset.AssetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,11 +1,11 @@
 package com.corsairops.mission.controller;
 
-import com.corsairops.mission.client.asset.AssetResponse;
 import com.corsairops.mission.dto.MissionResponse;
 import com.corsairops.mission.service.AssignedAssetService;
 import com.corsairops.mission.util.MissionMapper;
 import com.corsairops.shared.annotations.CommonReadResponses;
 import com.corsairops.shared.annotations.CommonWriteResponses;
+import com.corsairops.shared.dto.asset.AssetResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.corsairops.mission.util;
 
-import com.corsairops.mission.client.user.UserServiceClient;
+import com.corsairops.shared.client.UserServiceClient;
 import com.corsairops.shared.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
